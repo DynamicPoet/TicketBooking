@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>个人中心</title>
+    <title>航班列表</title>
+
     <!-- 新 Bootstrap4 核心 CSS 文件 -->
     <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
     <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
@@ -26,10 +27,10 @@
             <li class="nav-item">
                 <a class="nav-link" href="order">订单管理</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item active">
                 <a class="nav-link" href="flight">机票查询</a>
             </li>
-            <li class="nav-item active">
+            <li class="nav-item">
                 <a class="nav-link" href="person">个人中心</a>
             </li>
         </ul>
@@ -53,6 +54,8 @@
         </form>
     </div>
 </nav>
+
+
 
 <footer class="mastfoot mt-auto text-center">
     <div class="inner">
@@ -82,8 +85,7 @@
                     $("#userspace").show();
                     $("#showlname").html(name);
                 }else {
-                    alert("请先登录！！");
-                    window.location.href="homepage";
+
                 }
             },
             error : function() {

@@ -2,9 +2,99 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>我的订单</title>
 </head>
+<!-- 新 Bootstrap4 核心 CSS 文件 -->
+<link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+<!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+<script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+<!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+<script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
 <body>
 
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+    <a class="navbar-brand" href="#">机票查询预订系统</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="homepage">主页 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="order">订单管理</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="flight">机票查询</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="person">个人中心</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <ul id="loginbar" class="nav pull-right">
+                <button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>
+                <a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+            </ul>
+
+            <ul id="userspace"class="nav pull-right" style="display:none;">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="showlname" style="color: white"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" onclick="$.pexit()">安全退出</a>
+                    </div>
+                </li>
+            </ul>
+
+        </form>
+    </div>
+</nav>
+
+
+<footer class="mastfoot mt-auto text-center">
+    <div class="inner">
+        <h4>E-Ticket Searching System V0.1 </h4>
+        <p>Copyright &copy; 2019 &middot; All Rights Reserved &middot; <a href="#" >ETSS</a></p>    </div>
+</footer>
+
+<script type="text/javascript">
+    $(function() {
+        $.ajax({
+            type : "post",
+            url : "judge",
+            dataType : "text",
+            success : function(name) {
+                console.log(name.length);
+                if(name!="" && name!=null && name !="null") {
+                    $("#lpid").val("");
+                    $("#lppassword").val("");
+                    $("#info").html("");
+                    $('.modal').map(function () {
+                        if (!$(this).is(":hidden")){
+                            $(this).modal('hide');
+                        }
+                    });
+                    $("#loginbar").hide();
+                    $("#showloginbtn").hide();
+                    $("#userspace").show();
+                    $("#showlname").html(name);
+                }else {
+                    alert("请先登录！！");
+                    window.location.href="homepage";
+                }
+            },
+            error : function() {
+
+            }
+        });
+    })
+
+</script>
 </body>
 </html>

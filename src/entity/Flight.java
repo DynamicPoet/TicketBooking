@@ -1,6 +1,6 @@
 package entity;
 
-public class List {
+public class Flight {
     private String num;
     private String from;
     private String to;
@@ -11,7 +11,7 @@ public class List {
     private String depart;
     private String arrival;
 
-    public List(String num, String from, String to, int price, int storage, String company, String type, String depart, String arrival) {
+    public Flight(String num, String from, String to, int price, int storage, String company, String type, String depart, String arrival) {
         this.num = num;
         this.from = from;
         this.to = to;
