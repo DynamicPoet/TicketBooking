@@ -5,6 +5,12 @@ public class Order {
     private String num;
     private String createTime;
 
+    public Order(String username, String num, String createTime) {
+        this.username = username;
+        this.num = num;
+        this.createTime = createTime;
+    }
+
     public String getUsername() {
         return username;
     }

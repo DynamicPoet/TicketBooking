@@ -1,52 +1,362 @@
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>login</title>
-    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
-    <script type="text/javascript">
-        $(function(){
-            $("#loginBtn2").click(function () {
-                $.ajax({
-                    type:"post",
-                    url:"login",
-                    dataType:"json",
-                    data:{"username":$("#username").val(),"password":$("#password").val()},
-                    success:function (data) {
-                        if(data.result=="success"){
-                            alert("登录成功");
-                            window.location.href="homepage";
-                        }else
-                            alert("密码错误");
-                    },
-                    error:function () {
-                        alert("网络错误");
-                    }
-                });
-            })
-            $("#loginBtn1").click(function () {
-                $("#login").css("display","block")
-            })
-        })
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>欢迎使用机票查询预订系统</title>
+    <script type="text/javascript">
+        var flag=[false,false,false,false,false];//全局变量 ，以提交后检查之用，若没填充的，为false
+        var rpid,rpsexy,rpbdate;
+        var year,month,day,sexynum;
+        var pass1,pass2;
+        var formJson={};//表单数据；
     </script>
-    <style>
-        #login{
-            display: none;
-        }
-    </style>
+
+    <!-- 新 Bootstrap4 核心 CSS 文件 -->
+    <link rel="stylesheet" href="https://cdn.bootcss.com/bootstrap/4.0.0-beta/css/bootstrap.min.css">
+
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+
+    <!-- popper.min.js 用于弹窗、提示、下拉菜单 -->
+    <script src="https://cdn.bootcss.com/popper.js/1.12.5/umd/popper.min.js"></script>
+
+    <!-- 最新的 Bootstrap4 核心 JavaScript 文件 -->
+    <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
+
 </head>
 <body>
-    <div>
-        <P>This is my message:</P>
-    </div>
-    <div>
-        <button id="loginBtn1">登录</button>
-    </div>
-    <div id="login">
-        <input type="text" id="username" name="username" />
-        <input type="password" id="password" name="password"/>
-        <button id="loginBtn2">登录</button>
-    </div>
+<nav class="navbar navbar-expand-lg bg-primary navbar-dark">
+    <a class="navbar-brand" href="#">机票查询预订系统</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="index.html">主页 <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="pchoose.html">订单管理</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="plook.html">机票查询</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="pcenter.html">个人中心</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <ul id="loginbar" class="nav pull-right">
+                <button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>
+                <a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+            </ul>
 
+            <ul id="userspace"class="nav pull-right" style="display:none;">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span id="showlname"></span>
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="#" onclick="$.pexit()">安全退出</a>
+                    </div>
+                </li>
+            </ul>
+
+        </form>
+    </div>
+</nav>
+
+<div class="jumbotron jumbotron-fluid text-center">
+    <h1 class="display-4">欢迎使用机票查询预订系统</h1>
+    <p class="lead">Welcome to use E-Ticket Searching System</p>
+    <hr class="my-4">
+    <p class="lead" id="showloginbtn">
+        <button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>
+        &nbsp;
+        &nbsp;
+        <a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+    </p>
+</div>
+
+
+<footer class="mastfoot mt-auto text-center">
+    <div class="inner">
+        <h4>E-Ticket Searching System V0.1 </h4>
+        <p>Copyright &copy; 2019 &middot; All Rights Reserved &middot; <a href="#" >ETSS</a></p>    </div>
+</footer>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="logindialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" >
+                    登录
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action=""Method="post">
+                    <br>输入用户名:
+                    <br><input type="text" id="lpid">
+                    <br>输入密码:
+                    <br><input type="password" id="lppassword">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span id="linfo"></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="$.plogin()">
+                    登录
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<div class="modal fade" id="registerdialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+
+                <h5 class="modal-title" >
+                    注册
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action=""Method="post">
+                    <br>输入用户名:
+                    <br><input type="text" id="rpid"> <span id="s1"></span>
+                    <br>输入姓名:
+                    <br><input type="text" id="rpname"> <span id="s2"></span>
+                    <br>输入密码:
+                    <br><input type="password" id="rppassword"> <span id="s3"></span>
+                    <br> 确认密码：
+                    <br><input  type="password" value="" id="rrppassword"> <span id="s4"></span>
+                    <br> 联系电话：
+                    <br><input  type="text" value="" id="rptel" /> <span id="s5"></span>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <span id="rinfo"></span>
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
+                </button>
+                <button type="button" class="btn btn-primary" onclick="$.pregister()">
+                    注册
+                </button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
+
+<script type="text/javascript">
+    $.plogin=function(){
+        $.ajax({url:"PatientLoginAjax",type:"post",data:{"lpid":$("#lpid").val(),"lppassword":$("#lppassword").val()},success:function(data){
+                if(data=="error")
+                    $("#linfo").html("用户名或密码错误");
+                else{
+                    $("#lpid").val("");
+                    $("#lppassword").val("");
+                    $("#info").html("");
+                    $('.modal').map(function () {
+                        if (!$(this).is(":hidden")){
+                            $(this).modal('hide');
+                        }
+                    });
+                    $("#loginbar").hide();
+                    $("#showloginbtn").hide();
+                    $("#userspace").show();
+                    $("#showlname").html(data);
+                }},
+            error:function(){$("#linfo").html("系统出错");}
+        });
+    }
+
+    $.pexit=function(){
+        $("#userspace").hide();
+        $("#showlname").html("");
+        $("#showloginbtn").show();
+        $("#loginbar").show();
+        $("#lpid").val("");
+        $("#lppassword").val("");
+        $("#info").html("");
+        $.post("PatientExitAjax");
+    }
+
+    $.pregister=function(){
+        if(flag[0]==false || flag[1]==false || flag[2]==false || flag[3]==false||flag[4]==false){
+            $("#rinfo").html("注册表不完整");
+        }
+        else {
+            var userData=JSON.stringify(formJson);
+            $.ajax( {url:"PatientRegister",
+                type:"post",
+                data:{"mydata":userData},
+                success:function(data){
+                    if(data=="ok"){
+                        $("#rinfo").html("注册成功");
+                        $("#rpid").val("");
+                        $("#rpname").val("");
+                        $("#rppassword").val("");
+                        $("#rrppassword").val("");
+                        $("#rptel").val("");
+                        alert("注册成功");
+                        $('.modal').map(function () {
+                            if (!$(this).is(":hidden")){
+                                $(this).modal('hide');
+                            }
+                        });
+                    }
+                    else {
+                        $("#rinfo").html("注册失败");
+                    }
+                },
+                error:function(){$("#rinfo").html("系统出错");}
+            });
+        }
+    }
+
+    $(function(){
+        //身份证号码
+        $("#rpid").blur(function(){
+            rpid=$("#rpid").val();
+            var reg = /(^\d{18}$)|(^\d{17}(\d|X|x)$)/;
+            if(reg.test(rpid) === false){
+                flag[0]=false;
+                $("#s1")[0].innerHTML="身份证号码错误";
+            }
+            else{
+                //从身份证中读取生日
+                year=rpid.substring(6,10);
+                month=rpid.substring(10,12);
+                day=rpid.substring(12,14);
+                rpbdate=year+"-"+month+"-"+day;
+                //从身份证中读取性别
+                sexynum=rpid.charAt(16);
+                if(sexynum%2==0){
+                    rpsexy="女";
+                }
+                else{
+                    rpsexy="男";
+                }
+                $.ajax({url:"PatientInfoCheck",
+                    type:"post",
+                    data:{"rpid":rpid},
+                    success:function(data){
+                        if(data=="ok"){
+                            flag[0]=true;
+                            $("#s1")[0].innerHTML="√ 性别:"+rpsexy+" 生日:"+rpbdate;
+                            formJson.pid=rpid;
+                            formJson.psexy=rpsexy;
+                            formJson.pbdate=rpbdate;
+                        }
+                        else {
+                            $("#s1")[0].innerHTML="身份证号码已注册";
+                            flag[0]=false;
+                        }
+                    },
+                    error:function() { $("#rinfo").html("系统出错"); }
+                });
+            }
+        });
+
+        //姓名
+        $("#rpname").blur(function(){
+            var rpname=$("#rpname").val().trim();
+            if(rpname==""){
+                $("#s2")[0].innerHTML="姓名不能为空";
+                flag[1]=false;
+            }
+            else{
+                flag[1]=true;
+                $("#s2")[0].innerHTML="√";
+                formJson.pname=rpname;
+            }
+        });
+        //密码第一遍
+        $("#rppassword").blur(function(){
+            pass1=$("#rppassword").val();
+            if(pass1.length<6){
+                $("#s3")[0].innerHTML="密码少于6位";
+                flag[2]=false;
+            }
+            else {
+                flag[2]=true;
+                $("#s3")[0].innerHTML="√";
+            }
+        });
+        //密码第二遍
+        $("#rrppassword").blur(function(){
+            pass2=$("#rrppassword").val();
+            if(pass1==pass2){
+                $("#s4")[0].innerHTML="√";
+                flag[3]=true;
+                formJson.ppassword=pass2;
+            }
+            else {
+                $("#s4")[0].innerHTML="密码不一致";
+                flag[3]=false;
+            }
+        });
+        //电话号码判断
+        $("#rptel").blur(function(){
+            var regtel=/^1(3|4|5|7|8)\d{9}$/;
+            var rptel=$("#rptel").val();
+            if(regtel.test(rptel) === false){
+                flag[4]=false;
+                $("#s5")[0].innerHTML="电话号码错误";
+            }
+            else {
+                $("#s5")[0].innerHTML="√";
+                flag[4]=true;
+                formJson.ptel=rptel;
+            }
+        });
+    });
+
+    $(function() {
+        $.ajax({
+            type : "post",
+            url : "PatientLoginCheck",
+            dataType : "text",
+            success : function(name) {
+                console.log(name.length);
+                if(name.length < 100) {
+                    $("#lpid").val("");
+                    $("#lppassword").val("");
+                    $("#info").html("");
+                    $('.modal').map(function () {
+                        if (!$(this).is(":hidden")){
+                            $(this).modal('hide');
+                        }
+                    });
+                    $("#loginbar").hide();
+                    $("#showloginbtn").hide();
+                    $("#userspace").show();
+                    $("#showlname").html(name);
+                }else {
+                }
+            },
+            error : function() {
+
+            }
+        });
+    });
+
+
+</script>
 </body>
 </html>

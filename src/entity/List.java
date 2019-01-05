@@ -4,12 +4,24 @@ public class List {
     private String num;
     private String from;
     private String to;
-    private double price;
+    private int price;
     private int storage;
     private String company;
     private String type;
     private String depart;
     private String arrival;
+
+    public List(String num, String from, String to, int price, int storage, String company, String type, String depart, String arrival) {
+        this.num = num;
+        this.from = from;
+        this.to = to;
+        this.price = price;
+        this.storage = storage;
+        this.company = company;
+        this.type = type;
+        this.depart = depart;
+        this.arrival = arrival;
+    }
 
     public String getNum() {
         return num;
@@ -33,14 +45,6 @@ public class List {
 
     public void setTo(String to) {
         this.to = to;
-    }
-
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
     }
 
     public int getStorage() {
@@ -82,4 +86,8 @@ public class List {
     public void setArrival(String arrival) {
         this.arrival = arrival;
     }
+
+    public int getPrice() { return price; }
+
+    public void setPrice(int price) { this.price = price; }
 }
