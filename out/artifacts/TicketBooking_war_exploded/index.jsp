@@ -9,8 +9,16 @@
 <html>
   <head>
     <title>hello</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script>
+      $(function(){
+          $("#btn").click(function () {
+              alert("index");
+          })
+      })
+    </script>
   </head>
   <body>
-  <a href="homepage">主页</a>
+  <button id="btn">测试</button>
   </body>
 </html>

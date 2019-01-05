@@ -1,0 +1,52 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>login</title>
+    <script src="https://cdn.bootcss.com/jquery/1.10.2/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(function(){
+            $("#loginBtn2").click(function () {
+                $.ajax({
+                    type:"post",
+                    url:"login",
+                    dataType:"json",
+                    data:{"username":$("#username").val(),"password":$("#password").val()},
+                    success:function (data) {
+                        if(data.result=="success"){
+                            alert("登录成功");
+                            window.location.href="homepage";
+                        }else
+                            alert("密码错误");
+                    },
+                    error:function () {
+                        alert("网络错误");
+                    }
+                });
+            })
+            $("#loginBtn1").click(function () {
+                $("#login").css("display","block")
+            })
+        })
+
+    </script>
+    <style>
+        #login{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <P>This is my message:</P>
+    </div>
+    <div>
+        <button id="loginBtn1">登录</button>
+    </div>
+    <div id="login">
+        <input type="text" id="username" name="username" />
+        <input type="password" id="password" name="password"/>
+        <button id="loginBtn2">登录</button>
+    </div>
+
+</body>
+</html>
