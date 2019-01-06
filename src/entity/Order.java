@@ -10,7 +10,7 @@ public class Order {
         this.num = num;
         this.createTime = createTime;
     }
-
+    public Order(){}
     public String getUsername() {
         return username;
     }

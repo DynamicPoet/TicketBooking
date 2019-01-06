@@ -7,9 +7,14 @@ public class User {
     private String sex; //性别
     private String email; //邮箱
     private String name;//姓名
+    public User(){}
     public User(String username,String password){
         this.username=username;
         this.password=password;
+        this.phone="";
+        this.sex="";
+        this.email="";
+        this.name="";
     }
 
     public User(String username, String password, String phone, String sex, String email, String name) {

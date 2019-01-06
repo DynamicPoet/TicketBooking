@@ -14,9 +14,14 @@ public class FlightDao extends BaseDao {
         return flight;
     }
 
+    //按条件查询航班
+    public List<Flight> getFlightByInfo(){
+        return null;
+    }
+
     // 删除
     public void delete(String fnum) {
-        String sql = "delete from tb_flight where Fnum=?";
+        String sql = "delete from tb_flight where Fnum like ?";
         Object[] paramsValue = {fnum};
         super.update(sql, paramsValue);
     }

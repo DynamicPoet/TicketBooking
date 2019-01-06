@@ -22,6 +22,7 @@ public class Flight {
         this.depart = depart;
         this.arrival = arrival;
     }
+    public Flight(){}
 
     public String getNum() {
         return num;

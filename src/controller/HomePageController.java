@@ -1,10 +1,9 @@
 package controller;
 
-import entity.User;
 import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
-import service.HomepageManagement;
+import service.UserManagement;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -20,7 +19,7 @@ public class HomePageController {
     }
 
     @RequestMapping(value = "/login")
-    public void checkUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    public void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
         System.out.println("checkLogin");
         PrintWriter out=response.getWriter();
         String username=request.getParameter("username");
@@ -40,31 +39,29 @@ public class HomePageController {
     @RequestMapping(value = "/register")
     public void registerUser(HttpServletRequest request,HttpServletResponse response) throws IOException {
         System.out.println("register");
-        PrintWriter out=response.getWriter();
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
         JSONObject json=new JSONObject();
-        if(HomepageManagement.registerUser(new User(username,password))){
+        if(UserManagement.registerUser(request.getParameter("username"),request.getParameter("password"))){
             json.put("result","success");
         }
         else{
             json.put("result","error");
         }
+        PrintWriter out=response.getWriter();
         out.print(json);
     }
 
     @RequestMapping(value = "/check")
     public void userCheck(HttpServletRequest request,HttpServletResponse response) throws IOException {
         System.out.println("check");
-        PrintWriter out=response.getWriter();
         String username=request.getParameter("name");
         JSONObject json=new JSONObject();
-        if(HomepageManagement.checkUser(username)){
+        if(UserManagement.checkUser(username)){
             json.put("result","ok");
         }
         else{
             json.put("result","error");
         }
+        PrintWriter out=response.getWriter();
         out.print(json);
     }
 
@@ -74,5 +71,11 @@ public class HomePageController {
         PrintWriter out=response.getWriter();
         System.out.println(session.getAttribute("username"));
         out.print(session.getAttribute("username"));
+    }
+
+    @RequestMapping(value = "/logout")
+    public void logout(HttpServletRequest request,HttpServletResponse response){
+        HttpSession session=request.getSession();
+        session.removeAttribute("username");
     }
 }
