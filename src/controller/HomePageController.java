@@ -27,7 +27,7 @@ public class HomePageController {
         JSONObject json=new JSONObject();
         HttpSession session=request.getSession();
         session.setAttribute("username",username);
-        if(username.equals("1")&&password.equals("1")){
+        if(UserManagement.checkLogin(username,password)){
             json.put("result","success");
         }
         else{
@@ -54,15 +54,15 @@ public class HomePageController {
     public void userCheck(HttpServletRequest request,HttpServletResponse response) throws IOException {
         System.out.println("check");
         String username=request.getParameter("name");
-        JSONObject json=new JSONObject();
+        PrintWriter out=response.getWriter();
         if(UserManagement.checkUser(username)){
-            json.put("result","ok");
+            out.print("error");
         }
         else{
-            json.put("result","error");
+            out.print("ok");
         }
-        PrintWriter out=response.getWriter();
-        out.print(json);
+
+
     }
 
     @RequestMapping(value = "/judge")

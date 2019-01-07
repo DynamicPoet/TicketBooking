@@ -16,10 +16,25 @@ public class OrderDao extends BaseDao {
 
     // 查询本人全部订单
     public List<Order> FindOrderByUsername(String username){
-        String sql = "select * from tb_order where Uuser=?";
+        String sql = "select * from tb_order where username=?";
         List<Order> list = super.query(sql, new Object[]{username}, Order.class);
         return  list;
     }
+
+    //按时间查询
+    public List<Order> FindOrderByTime(String createtime){
+        String sql = "select * from tb_order where createTime=?";
+        List<Order> list = super.query(sql, new Object[]{createtime}, Order.class);
+        return  list;
+    }
+
+    //按航班号查询
+    public List<Order> FindOrderByNum(String num){
+        String sql = "select * from tb_order where num=?";
+        List<Order> list = super.query(sql, new Object[]{num}, Order.class);
+        return  list;
+    }
+
 
     //删除订单
     public void delete(int id) {

@@ -10,8 +10,15 @@ public class FlightManagement {
         FlightDao flightDao=new FlightDao();
         return flightDao.getAll();
     }
-    public static List<Flight> getFlightByInfo(){
-        return null;
+    public static List<Flight> getFlightByFromTo(String from,String to){
+        FlightDao flightDao=new FlightDao();
+        List<Flight> list=flightDao.getFlightByFromTo(from,to);
+        return list;
+    }
+    public static List<Flight> getFlightByCompany(String company){
+        FlightDao flightDao=new FlightDao();
+        List<Flight> list=flightDao.getFlightByCompany(company);
+        return list;
     }
 
 }

@@ -47,8 +47,8 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <ul id="loginbar" class="nav pull-right">
-                <button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>
-                <a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+                <a class="btn btn-primary btn-lg" href="#" onclick="$.plogin()" role="button" data-toggle="modal" data-target="#logindialog">登录</a>
+                <a class="btn btn-primary btn-lg" href="#" onclick="$.pregister()" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
             </ul>
 
             <ul id="userspace"class="nav pull-right" style="display:none;">
@@ -225,7 +225,7 @@
     }
 
     $.pregister=function(){
-        if(flag[0]==false || flag[1]==false || flag[2]==false || flag[3]==false||flag[4]==false){
+        if(flag[0]==false || flag[1]==false || flag[2]==false){
             $("#rinfo").html("注册表不完整");
         }
         else {
@@ -266,14 +266,14 @@
                 type: "post",
                 data: {name: user},
                 success: function (data) {
-                    if (data == "ok") {
+                    if (data == "error") {
+                        $("#s1")[0].innerHTML = "用户名不可用";
+                        flag[0] = false;
+                    }
+                    else {
                         $("#s1")[0].innerHTML = "用户名可用";
                         flag[0] = true;
                         formJson.username = user;
-                    }
-                    else {
-                        $("#s1")[0].innerHTML = "用户名不可用";
-                        flag[0] = false;
                     }
                 },
                 error: function () {

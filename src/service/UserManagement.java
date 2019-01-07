@@ -7,8 +7,13 @@ public class UserManagement {
     public static boolean checkLogin(String username,String password){
         UserDao userDao=new UserDao();
         Boolean flag;
-        if(userDao.Check(new User(username,password))){ flag=true; }
-        else{ flag=false; }
+        if(userDao.IsExistence(username)){
+            if(userDao.Check(new User(username,password))){ flag=true; }
+            else{ flag=false; }
+        }
+        else{
+            flag=false;
+        }
         return flag;
     }
     public static boolean checkUser(String username){

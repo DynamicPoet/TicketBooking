@@ -24,4 +24,18 @@ public class OrderController {
         JSONArray jsonArray=JSONArray.fromObject(OrderManagement.getOrder(username));
         out.print(jsonArray);
     }
+    @RequestMapping(value = "/getOrderByTime")
+    public void getOrderByTime(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String time=request.getParameter("time");
+        JSONArray jsonArray=JSONArray.fromObject(OrderManagement.getOrderByTime(time));
+        PrintWriter out=response.getWriter();
+        out.print(jsonArray);
+    }
+    @RequestMapping(value = "/getOrderByNum")
+    public void getOrderByNum(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        String num=request.getParameter("num");
+        JSONArray jsonArray=JSONArray.fromObject(OrderManagement.getOrderByNum(num));
+        PrintWriter out=response.getWriter();
+        out.print(jsonArray);
+    }
 }
