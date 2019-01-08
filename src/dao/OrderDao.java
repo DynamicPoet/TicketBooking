@@ -16,21 +16,21 @@ public class OrderDao extends BaseDao {
 
     // 查询本人全部订单
     public List<Order> FindOrderByUsername(String username){
-        String sql = "select * from tb_order where username=?";
+        String sql = "select * from tb_order where username like ?";
         List<Order> list = super.query(sql, new Object[]{username}, Order.class);
         return  list;
     }
 
     //按时间查询
     public List<Order> FindOrderByTime(String createtime){
-        String sql = "select * from tb_order where createTime=?";
+        String sql = "select * from tb_order where createTime like ?";
         List<Order> list = super.query(sql, new Object[]{createtime}, Order.class);
         return  list;
     }
 
     //按航班号查询
     public List<Order> FindOrderByNum(String num){
-        String sql = "select * from tb_order where num=?";
+        String sql = "select * from tb_order where num like ?";
         List<Order> list = super.query(sql, new Object[]{num}, Order.class);
         return  list;
     }

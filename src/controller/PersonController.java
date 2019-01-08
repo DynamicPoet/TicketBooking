@@ -21,6 +21,7 @@ public class PersonController {
         String username=request.getParameter("username");
         JSONArray jsonArray=JSONArray.fromObject(UserManagement.getUserInfo(username));
         PrintWriter out=response.getWriter();
+        System.out.println(jsonArray);
         out.print(jsonArray);
     }
     @RequestMapping(value = "/updateUser")
@@ -30,6 +31,7 @@ public class PersonController {
         String sex=request.getParameter("sex");
         String email=request.getParameter("email");
         String name=request.getParameter("name");
+        System.out.println("info:"+username+phone+sex+email+name);
         UserManagement.updateUserInfo(username,phone,sex,email,name);
     }
 

@@ -11,6 +11,7 @@ public class FlightManagement {
         return flightDao.getAll();
     }
     public static List<Flight> getFlightByFromTo(String from,String to){
+        System.out.println(from+" "+to);
         FlightDao flightDao=new FlightDao();
         List<Flight> list=flightDao.getFlightByFromTo(from,to);
         return list;
@@ -21,4 +22,8 @@ public class FlightManagement {
         return list;
     }
 
+    public static List<Flight> getFlightByNum(String num) {
+        FlightDao flightDao=new FlightDao();
+        return flightDao.getFlightByNum(num);
+    }
 }

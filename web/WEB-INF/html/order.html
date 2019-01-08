@@ -63,22 +63,21 @@
         <span>根据订单时间查询</span>
         &nbsp;&nbsp;
         <input class="form-control mr-sm-2" placeholder="请输入创建订单时间" id="orderCreatTime">
-        <button class="btn btn-outline-success my-2 my-sm-0" onclick="$.searchdoctorlist()" type="button">查询</button>
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="$.getOrderByTime()" type="button">查询</button>
         &nbsp;&nbsp; &nbsp;&nbsp;
         <span>根据订单航班号查询</span>
         &nbsp;&nbsp;
-        <input class="form-control mr-sm-2" placeholder="请输入航班号" id="orderFnum">
-        <button class="btn btn-outline-success my-2 my-sm-0" onclick="$.searchdoctorlist()" type="button">查询</button>
+        <input class="form-control mr-sm-2" placeholder="请输入航班号" id="orderNum">
+        <button class="btn btn-outline-success my-2 my-sm-0" onclick="$.getOrderByNum()" type="button">查询</button>
         <span id="ms"></span>
     </form>
     <br>
     <table class="table table-hover" id="table">
-        <thead>
+        <thead style="font-weight: bold">
         <tr>
-            <th>订单号</th>
-            <th>用户名</th>
-            <th>航班号</th>
-            <th>创建时间</th>
+            <td>订单号</td>
+            <td>航班号</td>
+            <td>创建时间</td>
         </tr>
         </thead>
         <tbody id="table2">
@@ -114,6 +113,21 @@
                     $("#showloginbtn").hide();
                     $("#userspace").show();
                     $("#showlname").html(name);
+
+                    $.ajax({
+                        url:"getOrder",
+                        type:"post",
+                        datatype:"json",
+                        data:{"username":name},
+                        success:function (data) {
+                            var jsonObj=JSON.parse(data);
+                            showOrder(jsonObj);
+                        },
+                        error:function () {
+                            alert("系统出错");
+                        }
+                    });
+
                 }else {
                     alert("请先登录！！");
                     window.location.href="homepage";
@@ -124,7 +138,88 @@
             }
         });
     })
+    $.getOrderByTime=function () {
+        $.ajax({
+            url:"getOrderByTime",
+            type:"post",
+            datatype:"json",
+            data:{"time":$("#orderCreatTime").val()},
+            success:function (data) {
+                var jsonObj=JSON.parse(data);
+                if(!isEmptyObject(jsonObj)){
+                    $("#table2").empty();
+                    showOrder(jsonObj);
+                }
+                else{
+                    alert("未查到数据");
+                }
+            },
+            error:function () {
+                alert("系统出错！");
+            }
+        })
+    }
+    $.getOrderByNum=function () {
+        $.ajax({
+            url:"getOrderByNum",
+            type:"post",
+            datatype:"json",
+            data:{"num":$("#orderNum").val()},
+            success:function (data) {
+                var jsonObj=JSON.parse(data);
+                if(!isEmptyObject(jsonObj)){
+                    $("#table2").empty();
+                    showOrder(jsonObj);
+                }
+                else{
+                    alert("未查到数据")
+                }
 
+            },
+            error:function () {
+                alert("系统出错！");
+            }
+        })
+    }
+    function showOrder(jsonObj) {
+        for(var row in jsonObj){
+            var id=jsonObj[row].id;
+            var num=jsonObj[row].num;
+            var createtime=jsonObj[row].createTime;
+            $("#table2").append("<tr><td>"+id+"</td><td>"+num+"</td><td>"+createtime+"</td></tr>");
+            //getFlight(num);
+        }
+    }
+    function getFlight(num) {
+        $.ajax({
+            url:"getFlightByNum",
+            type:"post",
+            datatype:"json",
+            data:{"num":num},
+            success:function (data) {
+                var jsonObj=JSON.parse(data);
+                showFlight(jsonObj);
+            },
+            error:function () {
+                alert("系统出错");
+            }
+        });
+    }
+    function showFlight(jsonObj) {
+        var from=jsonObj[0].from;
+        var to=jsonObj[0].to;
+        var depart=jsonObj[0].depart;
+        var arrival=jsonObj[0].arrival;
+        $("#table2").append("<td>"+from+"</td><td>"+to+"</td><td>"+depart+"</td><td>"+arrival+"</td>");
+        //$("#table2").append("<tr></tr>");
+
+    }
+    function isEmptyObject(e) {
+        var t;
+        for (t in e)
+            return !1;
+        return !0
+    }
 </script>
 </body>
 </html>

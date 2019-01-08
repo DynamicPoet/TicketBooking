@@ -41,7 +41,7 @@ public class UserDao extends BaseDao{
     }
     //根据姓名查询个人信息
     public User findByName(String username){
-        String sql = "select * from admin where username like ?";
+        String sql = "select * from tb_user where username like ?";
         List<User> list = super.query(sql, new Object[]{username}, User.class);
         return  (list!=null&&list.size()>0) ? list.get(0) : null;
     }

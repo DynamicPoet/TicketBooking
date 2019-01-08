@@ -69,7 +69,6 @@ public class HomePageController {
     public void loginJudge(HttpServletRequest request,HttpServletResponse response) throws IOException {
         HttpSession session=request.getSession();
         PrintWriter out=response.getWriter();
-        System.out.println(session.getAttribute("username"));
         out.print(session.getAttribute("username"));
     }
 

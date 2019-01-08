@@ -69,20 +69,19 @@
             <div class="row contact-bg p-5 rounded mb-5">
                 <div class="col-lg-7 mb-4 mb-lg-0 text-left">
                     <form action="#">
-                        <h4>用户名:</h4>
-                        <br><span id="user"></span>
-                        <h4> 联系电话:</h4>
-                        <input type="text" class="form-control mb-3" id="name" name="name" placeholder="Your Phone">
+                        <h4 id="user">用户名:</h4>
+                        <h4 id="showPhone"> 联系电话:</h4>
+                        <input type="text" class="form-control mb-3" id="phone"  placeholder="Your Phone">
                         <h4> 性别:</h4>
-                        <input type="radio"  name="sex" id="man" checked="checked"/>男
-                        <input type="radio"  name="sex" id="woman"/>女
-                        <h4> 邮箱:</h4>
+                        <input type="radio"  name="sex" id="man" checked="checked" value="男"/>男
+                        <input type="radio"  name="sex" id="woman" value="女"/>女
+                        <h4 id="showMail"> 邮箱:</h4>
                         <input type="email" class="form-control mb-3" id="mail" name="mail" placeholder="Your Email">
-                        <h4> 真实姓名:</h4>
-                        <input type="text" class="form-control mb-3" id="subject" name="subject" placeholder="Your Name">
+                        <h4 id="showName"> 真实姓名:</h4>
+                        <input type="text" class="form-control mb-3" id="realName" name="realName" placeholder="Your Name">
                         <h4> 您的宝贵建议:</h4>
                         <textarea name="message" id="message" class="form-control mb-3" placeholder="Your Message"></textarea>
-                        <button type="button" value="send" class="btn btn-primary">提交</button>
+                        <button type="button" value="send" class="btn btn-primary" id="send" onclick="$.submit()">提交</button>
                     </form>
                 </div>
                 <div class="col-lg-5 text-center">
@@ -125,6 +124,24 @@
                     $("#showloginbtn").hide();
                     $("#userspace").show();
                     $("#showlname").html(name);
+                    $("#user").html("用户名："+name);
+                    $.ajax({
+                        url:"getUserInfo",
+                        type:"post",
+                        datatype:"json",
+                        data:{"username":name},
+                        success:function (data) {
+                            if(!isEmptyObject(data)){
+                                var jsonObj=JSON.parse(data);
+                                $("#showMail").html("邮箱："+jsonObj[0].email);
+                                $("#showPhone").html("联系电话："+jsonObj[0].phone);
+                                $("#showName").html("真实姓名："+jsonObj[0].name);
+                            }
+                        },
+                        error:function () {
+                            alert("系统错误");
+                        }
+                    })
                 }else {
                     alert("请先登录！！");
                     window.location.href="homepage";
@@ -134,8 +151,31 @@
 
             }
         });
-    })
 
+    })
+    $.submit=function () {
+        //alert("send");
+        var sex=$('input:radio[name="sex"]:checked').val();
+        $.ajax({
+            url:"updateUser",
+            type:"post",
+            datatype:"json",
+            data:{"username":$("#showlname").text(),"phone":$("#phone").val(),"sex":sex,"email":$("#mail").val(),"name":$("#realName").val()},
+            success:function () {
+                alert("更新成功！");
+            },
+            error:function () {
+                alert("系统出错！");
+            }
+        })
+    }
+
+    function isEmptyObject(e) {
+        var t;
+        for (t in e)
+            return !1;
+        return !0
+    }
 </script>
 </body>
 </html>

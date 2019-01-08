@@ -16,7 +16,7 @@ public class FlightDao extends BaseDao {
 
     //按出发地目的地查询航班
     public List<Flight> getFlightByFromTo(String from,String to){
-        String sql="select * from tb_flight where from like ? and to like ?";
+        String sql="select * from tb_flight where `from` like ? and `to` like ?";
         Object[] paramsValue={from,to};
         List<Flight> list=super.query(sql,paramsValue,Flight.class);
         return list;
@@ -30,13 +30,9 @@ public class FlightDao extends BaseDao {
     }
 
 
-    // 删除
-    public void delete(String fnum) {
-        String sql = "delete from tb_flight where num like ?";
-        Object[] paramsValue = {fnum};
-        super.update(sql, paramsValue);
+    public List<Flight> getFlightByNum(String num) {
+        String sql="select * from tb_flight where num like ?";
+        List<Flight> list=super.query(sql,new Object[]{num},Flight.class);
+        return list;
     }
-
-
-
 }

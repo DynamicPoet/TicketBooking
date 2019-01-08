@@ -11,16 +11,12 @@ public class JdbcUtil {
         Connection conn = null;
         try {
             Class.forName(JDBC_DRIVER);
-            System.out.println("注册驱动成功！");
             conn=DriverManager.getConnection(DB_URL,USER,PASS);
-            System.out.println("打开链接！");
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            System.out.println("注册驱动失败！");
         } catch (SQLException e) {
             e.printStackTrace();
-            System.out.println("打开链接失败！");
         }
         return conn;
     }
@@ -30,9 +26,7 @@ public class JdbcUtil {
             if(con!=null) con.close();
             if(pstmt!=null) pstmt.close();
             if(rs!=null )rs.close();
-            System.out.println("关闭成功！");
         } catch (SQLException e) {
-            System.out.println("关闭失败！");
             e.printStackTrace();
         }
 
