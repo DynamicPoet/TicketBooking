@@ -13,7 +13,6 @@ public class OrderDao extends BaseDao {
         super.update(sql, paramsValue);
     }
 
-
     // 查询本人全部订单
     public List<Order> FindOrderByUsername(String username){
         String sql = "select * from tb_order where username like ?";
@@ -22,19 +21,18 @@ public class OrderDao extends BaseDao {
     }
 
     //按时间查询
-    public List<Order> FindOrderByTime(String createtime){
-        String sql = "select * from tb_order where createTime like ?";
-        List<Order> list = super.query(sql, new Object[]{createtime}, Order.class);
+    public List<Order> FindOrderByTime(String createtime,String username){
+        String sql = "select * from tb_order where createTime like ? and username like ?";
+        List<Order> list = super.query(sql, new Object[]{createtime,username}, Order.class);
         return  list;
     }
 
     //按航班号查询
-    public List<Order> FindOrderByNum(String num){
-        String sql = "select * from tb_order where num like ?";
-        List<Order> list = super.query(sql, new Object[]{num}, Order.class);
+    public List<Order> FindOrderByNum(String num,String username){
+        String sql = "select * from tb_order where num like ? and username like ?";
+        List<Order> list = super.query(sql, new Object[]{num,username}, Order.class);
         return  list;
     }
-
 
     //删除订单
     public void delete(int id) {

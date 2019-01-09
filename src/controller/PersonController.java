@@ -16,14 +16,15 @@ public class PersonController {
     public String toPerson(){
         return "person";
     }
+
     @RequestMapping(value = "/getUserInfo")
     public void getUserInfo(HttpServletRequest request,HttpServletResponse response) throws IOException {
         String username=request.getParameter("username");
         JSONArray jsonArray=JSONArray.fromObject(UserManagement.getUserInfo(username));
         PrintWriter out=response.getWriter();
-        System.out.println(jsonArray);
         out.print(jsonArray);
     }
+
     @RequestMapping(value = "/updateUser")
     public void updateInfo(HttpServletRequest request,HttpServletResponse response) {
         String username=request.getParameter("username");
@@ -31,7 +32,6 @@ public class PersonController {
         String sex=request.getParameter("sex");
         String email=request.getParameter("email");
         String name=request.getParameter("name");
-        System.out.println("info:"+username+phone+sex+email+name);
         UserManagement.updateUserInfo(username,phone,sex,email,name);
     }
 

@@ -1,6 +1,5 @@
 package controller;
 
-import net.sf.json.JSONObject;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import service.UserManagement;
@@ -20,39 +19,33 @@ public class HomePageController {
 
     @RequestMapping(value = "/login")
     public void loginUser(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        System.out.println("checkLogin");
         PrintWriter out=response.getWriter();
         String username=request.getParameter("username");
         String password=request.getParameter("password");
-        JSONObject json=new JSONObject();
-        HttpSession session=request.getSession();
-        session.setAttribute("username",username);
         if(UserManagement.checkLogin(username,password)){
-            json.put("result","success");
+            HttpSession session=request.getSession();
+            session.setAttribute("username",username);
+            out.print("success");
         }
         else{
-            json.put("result","error");
+            out.print("error");
         }
-        out.print(json);
+
     }
 
     @RequestMapping(value = "/register")
     public void registerUser(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        System.out.println("register");
-        JSONObject json=new JSONObject();
-        if(UserManagement.registerUser(request.getParameter("username"),request.getParameter("password"))){
-            json.put("result","success");
-        }
-        else{
-            json.put("result","error");
-        }
         PrintWriter out=response.getWriter();
-        out.print(json);
+        if(UserManagement.registerUser(request.getParameter("username"),request.getParameter("password"))){
+            out.print("ok");
+            }
+        else{
+            out.print("error");
+        }
     }
 
     @RequestMapping(value = "/check")
     public void userCheck(HttpServletRequest request,HttpServletResponse response) throws IOException {
-        System.out.println("check");
         String username=request.getParameter("name");
         PrintWriter out=response.getWriter();
         if(UserManagement.checkUser(username)){

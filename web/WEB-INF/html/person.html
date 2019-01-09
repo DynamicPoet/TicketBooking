@@ -36,8 +36,8 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <ul id="loginbar" class="nav pull-right">
-                <button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>
-                <a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+                <!--<button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>-->
+                <!--<a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>-->
             </ul>
 
             <ul id="userspace"class="nav pull-right" style="display:none;">
@@ -133,9 +133,9 @@
                         success:function (data) {
                             if(!isEmptyObject(data)){
                                 var jsonObj=JSON.parse(data);
-                                $("#showMail").html("邮箱："+jsonObj[0].email);
-                                $("#showPhone").html("联系电话："+jsonObj[0].phone);
-                                $("#showName").html("真实姓名："+jsonObj[0].name);
+                                $("#phone").val(jsonObj[0].phone);
+                                $("#mail").val(jsonObj[0].email);
+                                $("#realName").val(jsonObj[0].name);
                             }
                         },
                         error:function () {
@@ -175,6 +175,17 @@
         for (t in e)
             return !1;
         return !0
+    }
+    $.pexit=function(){
+        $("#userspace").hide();
+        $("#showlname").html("");
+        $("#showloginbtn").show();
+        $("#loginbar").show();
+        $("#lpid").val("");
+        $("#lppassword").val("");
+        $("#info").html("");
+        $.post("logout");
+        window.location.href="homepage";
     }
 </script>
 </body>

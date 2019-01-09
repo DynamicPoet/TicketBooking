@@ -29,7 +29,7 @@ public class FlightDao extends BaseDao {
         return list;
     }
 
-
+    //按航班号查询
     public List<Flight> getFlightByNum(String num) {
         String sql="select * from tb_flight where num like ?";
         List<Flight> list=super.query(sql,new Object[]{num},Flight.class);

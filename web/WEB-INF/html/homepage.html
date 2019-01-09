@@ -25,6 +25,7 @@
 
 </head>
 <body>
+<!--导航栏-->
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark">
     <a class="navbar-brand" href="#">机票查询预订系统</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,8 +48,8 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <ul id="loginbar" class="nav pull-right">
-                <a class="btn btn-primary btn-lg" href="#" onclick="$.plogin()" role="button" data-toggle="modal" data-target="#logindialog">登录</a>
-                <a class="btn btn-primary btn-lg" href="#" onclick="$.pregister()" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+                <!--<a class="btn btn-primary btn-lg" href="#" onclick="$.plogin()" role="button" data-toggle="modal" data-target="#logindialog">登录</a>-->
+                <!--<a class="btn btn-primary btn-lg" href="#" onclick="$.pregister()" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>-->
             </ul>
 
             <ul id="userspace"class="nav pull-right" style="display:none;">
@@ -66,6 +67,7 @@
     </div>
 </nav>
 
+<!--大屏幕-->
 <div class="jumbotron jumbotron-fluid text-center">
     <h1 class="display-4">欢迎使用机票查询预订系统</h1>
     <p class="lead">Welcome to use E-Ticket Searching System</p>
@@ -78,7 +80,7 @@
     </p>
 </div>
 
-
+<!--底部-->
 <footer class="mastfoot mt-auto text-center">
     <div class="inner">
         <h4>E-Ticket Searching System V0.1 </h4>
@@ -86,6 +88,7 @@
 </footer>
 
 <!-- 模态框（Modal） -->
+<!--登录-->
 <div class="modal fade" id="logindialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -118,7 +121,7 @@
     </div><!-- /.modal -->
 </div>
 
-
+<!--注册-->
 <div class="modal fade" id="registerdialog" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -144,11 +147,8 @@
             </div>
             <div class="modal-footer">
                 <span id="rinfo"></span>
-                <button type="button" class="btn btn-default" data-dismiss="modal">关闭
-                </button>
-                <button type="button" class="btn btn-primary" onclick="$.pregister()">
-                    注册
-                </button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="$.close()">关闭</button>
+                <button type="button" class="btn btn-primary" onclick="$.pregister()">注册</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -156,6 +156,7 @@
 
 
 <script type="text/javascript">
+    //检查登录
     $(function() {
         $.ajax({
             type : "post",
@@ -185,7 +186,7 @@
             }
         });
     })
-
+    //登录
     $.plogin=function(){
         var name=$("#lpid").val();
         $.ajax({
@@ -212,7 +213,7 @@
             error:function(){$("#linfo").html("系统出错");}
         });
     }
-
+    //退出
     $.pexit=function(){
         $("#userspace").hide();
         $("#showlname").html("");
@@ -223,24 +224,27 @@
         $("#info").html("");
         $.post("logout");
     }
-
+    //注册
     $.pregister=function(){
         if(flag[0]==false || flag[1]==false || flag[2]==false){
             $("#rinfo").html("注册表不完整");
         }
         else {
             var userData=JSON.stringify(formJson);
-            $.ajax( {url:"register",
+            $.ajax({
+                url:"register",
                 type:"post",
-                data:{"mydata":userData},
+                datatype:"json",
+                data:{"username":$("#rpid").val(),"password":$("#rppassword").val()},
                 success:function(data){
                     if(data=="ok"){
-                        $("#rinfo").html("注册成功");
                         $("#rpid").val("");
-                        $("#rpname").val("");
                         $("#rppassword").val("");
                         $("#rrppassword").val("");
-                        $("#rptel").val("");
+                        $("#s1")[0].innerHTML = "";
+                        $("#s2")[0].innerHTML = "";
+                        $("#s3")[0].innerHTML = "";
+                        $("#rinfo").html("");
                         alert("注册成功");
                         $('.modal').map(function () {
                             if (!$(this).is(":hidden")){
@@ -256,15 +260,25 @@
             });
         }
     }
-
+    //关闭注册窗口
+    $.close=function(){
+        $("#rpid").val("");
+        $("#rppassword").val("");
+        $("#rrppassword").val("");
+        $("#s1")[0].innerHTML = "";
+        $("#s2")[0].innerHTML = "";
+        $("#s3")[0].innerHTML = "";
+        $("#rinfo").html("");
+    }
+    //用户名进行检查
     $(function () {
-        //用户名进行检查
         $("#rpid").blur(function () {
-            user = $("#rpid").val();   //取值
+            user = $("#rpid").val();
             $.ajax({
                 url: "check",
                 type: "post",
-                data: {name: user},
+                datatype:"json",
+                data: {"name": user},
                 success: function (data) {
                     if (data == "error") {
                         $("#s1")[0].innerHTML = "用户名不可用";

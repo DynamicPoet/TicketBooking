@@ -14,6 +14,7 @@
     <script src="https://cdn.bootcss.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"></script>
 </head>
 <body>
+<!--导航栏-->
 <nav class="navbar navbar-expand-lg bg-primary navbar-dark">
     <a class="navbar-brand" href="#">机票查询预订系统</a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,8 +37,8 @@
         </ul>
         <form class="form-inline my-2 my-lg-0">
             <ul id="loginbar" class="nav pull-right">
-                <button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>
-                <a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>
+                <!--<button class="btn btn-primary btn-lg"  role="button" data-toggle="modal" data-target="#logindialog">登录</button>-->
+                <!--<a class="btn btn-primary btn-lg" href="#" role="button" data-toggle="modal" data-target="#registerdialog">注册</a>-->
             </ul>
 
             <ul id="userspace"class="nav pull-right" style="display:none;">
@@ -54,8 +55,7 @@
         </form>
     </div>
 </nav>
-
-
+<!--查询按钮-->
 <div class="jumbotron jumbotron-fluid text-center">
     <h3 class="nav pull-right">机票查询</h3>
     <hr>
@@ -96,7 +96,7 @@
         </tbody>
     </table>
 </div>
-
+<!--底部-->
 <footer class="mastfoot mt-auto text-center">
     <div class="inner">
         <h4>E-Ticket Searching System V0.1 </h4>
@@ -104,6 +104,7 @@
 </footer>
 
 <script type="text/javascript">
+    //登录检查
     $(function() {
         $.ajax({
             type : "post",
@@ -145,6 +146,7 @@
             }
         });
     })
+    //按出发地目的地查询
     $.getListByFromTo=function () {
         $.ajax({
             url:"getFlightByFromTo",
@@ -166,6 +168,7 @@
             }
         });
     }
+    
     $.getListByHNA=function () {
         getListByCompany("HNN");
     }
@@ -184,7 +187,6 @@
             success:function (data) {
                 var jsonObj=JSON.parse(data);
                 if(!isEmptyObject(jsonObj)){
-                    alert("get!");
                     $("#table2").empty();
                     show(jsonObj);
                 }
@@ -218,20 +220,37 @@
         return !0
     }
     $.booking=function (num) {
-        alert($("#showlname").text());
-        $.ajax({
-           url:"createOrder",
-           type:"post",
-           datatype:"json",
-           data:{"num":num,"username":$("#showlname").text()},
-           success:function (data) {
-               alert("预订成功！")
-           },
-           error:function () {
-               alert("系统出错！")
-           }
-        });
+        if($("#showlname").html() != ""){
+            $.ajax({
+                url:"createOrder",
+                type:"post",
+                datatype:"json",
+                data:{"num":num,"username":$("#showlname").text()},
+                success:function (data) {
+                    alert("预订成功！")
+                },
+                error:function () {
+                    alert("系统出错！")
+                }
+            });
+        }
+        else{
+            alert("请先登录!");
+            window.location.href="homepage";
+        }
+
+    }
+    $.pexit=function(){
+        $("#userspace").hide();
+        $("#showlname").html("");
+        $("#showloginbtn").show();
+        $("#loginbar").show();
+        $("#lpid").val("");
+        $("#lppassword").val("");
+        $("#info").html("");
+        $.post("logout");
     }
 </script>
 </body>
 </html>
+

@@ -8,18 +8,22 @@ import java.util.Date;
 import java.util.List;
 
 public class OrderManagement {
+    //查询用户所有订单
     public static List<Order>getOrder(String username){
         OrderDao orderDao=new OrderDao();
         return orderDao.FindOrderByUsername(username);
     }
-    public static List<Order>getOrderByTime(String time){
+    //按创建时间查询
+    public static List<Order>getOrderByTime(String time,String username){
         OrderDao orderDao=new OrderDao();
-        return orderDao.FindOrderByTime(time);
+        return orderDao.FindOrderByTime(time,username);
     }
-    public static List<Order>getOrderByNum(String num){
+    //按航班号查询
+    public static List<Order>getOrderByNum(String num,String username){
         OrderDao orderDao=new OrderDao();
-        return orderDao.FindOrderByNum(num);
+        return orderDao.FindOrderByNum(num,username);
     }
+    //创建订单
     public static void createOrder(String username,String num){
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");//设置日期格式
         String createTime = df.format(new Date());
